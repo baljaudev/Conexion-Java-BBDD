@@ -1,17 +1,18 @@
 package dam.main;
 
-import dam.db.AccesoDB;
+import dam.model.Moto;
+import dam.persistencia.MotosPersistencia;
 
-import java.sql.Connection;
+import java.util.ArrayList;
 
 public class PruebaConexionDB {
     public static void main(String[] args) {
-        AccesoDB accesoDB = new AccesoDB(); // Crea una instancia de la clase AccesoDB
-        Connection conexion = accesoDB.getConexion(); // Obtiene la conexión a la base de datos
+        MotosPersistencia ap = new MotosPersistencia();
 
-        if (conexion != null) {
-            System.out.println("Conexion establecida");
+        ArrayList<Moto> listaMotos = ap.selecccionarTodos();
+
+        for (Moto moto : listaMotos) {
+            System.out.println(moto);
         }
     }
-
 }

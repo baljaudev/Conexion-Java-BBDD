@@ -15,18 +15,9 @@ public class AccesoDB {
     }
 
 
-    public Connection getConexion() {
-        Connection conexion = null;
-        try {
-            Class.forName(driver);
-            conexion = DriverManager.getConnection(url);
-        } catch (ClassNotFoundException e) {
-            System.out.println("El driver indicado no es correcto");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("No es posible establecer la conexión con la base de datos");
-            e.printStackTrace();
-        }
+    public Connection getConexion() throws ClassNotFoundException, SQLException {
+        Class.forName(driver);
+        Connection conexion = DriverManager.getConnection(url);
 
         return conexion;
     }
