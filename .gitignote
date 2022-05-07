@@ -1,2 +1,7 @@
-#Papelera
-*/out
+## IntelliJ
+out/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
