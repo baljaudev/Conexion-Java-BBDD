@@ -24,9 +24,9 @@ public class PruebaConexionDB {
 
         if (moto != null) {
 
-            for (int i = 0; i < listaMotos.size(); i++) {
-                if (listaMotos.get(i).getCilindrada() == cilindrada) {
-                    System.out.println(listaMotos.get(i));
+            for (Moto listaMoto : listaMotos) {
+                if (listaMoto.getCilindrada() == cilindrada) {
+                    System.out.println(listaMoto.getMarca() + " " + listaMoto.getModelo());
                 }
             }
         } else {
