@@ -3,10 +3,7 @@ package dam.persistencia;
 import dam.db.AccesoDB;
 import dam.model.Moto;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class MotosPersistencia {
@@ -20,7 +17,7 @@ public class MotosPersistencia {
     public ArrayList<Moto> selecccionarTodos() {
         ArrayList<Moto> listaMotos = new ArrayList<>();
 
-        String query = "SELECT " + MotosContract.COLUMN_ID + ", " + MotosContract.COLUMN_MODELO + ", " + MotosContract.COLUMN_MARCA
+        String query = "SELECT " + MotosContract.COLUMN_ID + ", " + MotosContract.COLUMN_MODELO + ", " + MotosContract.COLUMN_MARCA + ", " + MotosContract.COLUMN_CC
                 + " FROM " + MotosContract.NOMBRE_TABLA;
 
         Connection con = null;
@@ -37,13 +34,15 @@ public class MotosPersistencia {
             int idMoto;
             String modelo;
             String marca;
+            int cc;
 
             while (rs.next()) {
                 idMoto = rs.getInt(MotosContract.COLUMN_ID);
                 modelo = rs.getString(MotosContract.COLUMN_MODELO);
                 marca = rs.getString(MotosContract.COLUMN_MARCA);
+                cc = rs.getInt(MotosContract.COLUMN_CC);
 
-                moto = new Moto(idMoto, modelo, marca);
+                moto = new Moto(idMoto, modelo, marca, cc);
                 listaMotos.add(moto);
             }
         } catch (ClassNotFoundException e) {
@@ -66,5 +65,54 @@ public class MotosPersistencia {
             }
         }
         return listaMotos;
+    }
+
+    public Moto seleccionarPorCilindrada(int cc) {
+        Moto moto = null;
+
+        String query = "SELECT " + MotosContract.COLUMN_ID + ", " + MotosContract.COLUMN_MODELO + ", " + MotosContract.COLUMN_MARCA + ", " + MotosContract.COLUMN_CC
+                + " FROM " + MotosContract.NOMBRE_TABLA + " WHERE " + MotosContract.COLUMN_CC + " = ?";
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = db.getConexion();
+            pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, cc);
+            rs = pstmt.executeQuery();
+
+            int idMoto;
+            String modelo;
+            String marca;
+
+            if (rs.next()) {
+                idMoto = rs.getInt(MotosContract.COLUMN_ID);
+                modelo = rs.getString(MotosContract.COLUMN_MODELO);
+                marca = rs.getString(MotosContract.COLUMN_MARCA);
+
+                moto = new Moto(idMoto, modelo, marca, cc);
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("El driver indicado no es correcto");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("Error en la base de datos: error conexión, sentencia incorrecta");
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                } if (pstmt != null) {
+                    pstmt.close();
+                } if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return moto;
     }
 }
