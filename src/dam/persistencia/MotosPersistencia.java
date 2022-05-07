@@ -18,7 +18,7 @@ public class MotosPersistencia {
 
 
     public ArrayList<Moto> selecccionarTodos() {
-        ArrayList<Moto> listaAlumnos = new ArrayList<>();
+        ArrayList<Moto> listaMotos = new ArrayList<>();
 
         String query = "SELECT " + MotosContract.COLUMN_ID + ", " + MotosContract.COLUMN_MODELO + ", " + MotosContract.COLUMN_MARCA
                 + " FROM " + MotosContract.NOMBRE_TABLA;
@@ -40,11 +40,11 @@ public class MotosPersistencia {
 
             while (rs.next()) {
                 idMoto = rs.getInt(MotosContract.COLUMN_ID);
-                modelo = rs.getString(MotosContract.COLUMN_MARCA);
+                modelo = rs.getString(MotosContract.COLUMN_MODELO);
                 marca = rs.getString(MotosContract.COLUMN_MARCA);
 
                 moto = new Moto(idMoto, modelo, marca);
-                listaAlumnos.add(moto);
+                listaMotos.add(moto);
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -65,6 +65,6 @@ public class MotosPersistencia {
                 e.printStackTrace();
             }
         }
-        return listaAlumnos;
+        return listaMotos;
     }
 }
